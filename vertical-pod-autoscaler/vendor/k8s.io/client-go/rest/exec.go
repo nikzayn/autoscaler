@@ -31,7 +31,7 @@ import (
 func ConfigToExecCluster(config *Config) (*clientauthenticationapi.Cluster, error) {
 	caData, err := dataFromSliceOrFile(config.CAData, config.CAFile)
 	if err != nil {
-		return nil, fmt.Errorf("failed to load CA bundle for execProvider: %v", err)
+		return nil, fmt.Errorf("failed to load CA bundle for execProvider: %w", err)
 	}
 
 	var proxyURL string

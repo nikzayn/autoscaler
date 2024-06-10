@@ -74,7 +74,7 @@ func (i *storeIndex) reset() {
 func (i *storeIndex) getKeysFromIndex(indexName string, obj interface{}) (sets.String, error) {
 	indexFunc := i.indexers[indexName]
 	if indexFunc == nil {
-		return nil, fmt.Errorf("Index with name %s does not exist", indexName)
+		return nil, fmt.Errorf("index with name %s does not exist", indexName)
 	}
 
 	indexedValues, err := indexFunc(obj)
@@ -105,7 +105,7 @@ func (i *storeIndex) getKeysFromIndex(indexName string, obj interface{}) (sets.S
 func (i *storeIndex) getKeysByIndex(indexName, indexedValue string) (sets.String, error) {
 	indexFunc := i.indexers[indexName]
 	if indexFunc == nil {
-		return nil, fmt.Errorf("Index with name %s does not exist", indexName)
+		return nil, fmt.Errorf("index with name %s does not exist", indexName)
 	}
 
 	index := i.indices[indexName]

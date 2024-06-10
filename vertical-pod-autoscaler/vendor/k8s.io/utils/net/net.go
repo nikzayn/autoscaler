@@ -32,7 +32,7 @@ func ParseCIDRs(cidrsString []string) ([]*net.IPNet, error) {
 	for i, cidrString := range cidrsString {
 		_, cidr, err := ParseCIDRSloppy(cidrString)
 		if err != nil {
-			return nil, fmt.Errorf("invalid CIDR[%d]: %v (%v)", i, cidr, err)
+			return nil, fmt.Errorf("invalid CIDR[%d]: %v (%w)", i, cidr, err)
 		}
 		cidrs = append(cidrs, cidr)
 	}

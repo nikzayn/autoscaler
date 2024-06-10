@@ -381,13 +381,13 @@ func setUpInformer(kubeClient kube_client.Interface, kind controllerKind) (cache
 		informer = appsinformer.NewDaemonSetInformer(kubeClient, apiv1.NamespaceAll,
 			resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc})
 	default:
-		return nil, fmt.Errorf("Unknown controller kind: %v", kind)
+		return nil, fmt.Errorf("unknown controller kind: %s", kind)
 	}
 	stopCh := make(chan struct{})
 	go informer.Run(stopCh)
 	synced := cache.WaitForCacheSync(stopCh, informer.HasSynced)
 	if !synced {
-		return nil, fmt.Errorf("Failed to sync %v cache.", kind)
+		return nil, fmt.Errorf("failed to sync %s cache", kind)
 	}
 	return informer, nil
 }

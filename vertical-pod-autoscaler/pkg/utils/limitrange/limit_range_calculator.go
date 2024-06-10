@@ -81,7 +81,7 @@ func (lc *limitsChecker) GetPodLimitRangeItem(namespace string) (*core.LimitRang
 func (lc *limitsChecker) getLimitRangeItem(namespace string, limitType core.LimitType) (*core.LimitRangeItem, error) {
 	limitRanges, err := lc.limitRangeLister.LimitRanges(namespace).List(labels.Everything())
 	if err != nil {
-		return nil, fmt.Errorf("error loading limit ranges: %s", err)
+		return nil, fmt.Errorf("Error loading limit ranges: %w", err)
 	}
 
 	updatedResult := func(result core.ResourceList, lrItem core.ResourceList,

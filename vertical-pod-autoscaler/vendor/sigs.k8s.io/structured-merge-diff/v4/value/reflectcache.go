@@ -216,7 +216,7 @@ func (e TypeReflectCacheEntry) ToUnstructured(sv reflect.Value) (interface{}, er
 			var result string
 			err := unmarshal(data, &result)
 			if err != nil {
-				return nil, fmt.Errorf("error decoding string from json: %v", err)
+				return nil, fmt.Errorf("error decoding string from json: %w", err)
 			}
 			return result, nil
 
@@ -224,7 +224,7 @@ func (e TypeReflectCacheEntry) ToUnstructured(sv reflect.Value) (interface{}, er
 			result := make(map[string]interface{})
 			err := unmarshal(data, &result)
 			if err != nil {
-				return nil, fmt.Errorf("error decoding object from json: %v", err)
+				return nil, fmt.Errorf("error decoding object from json: %w", err)
 			}
 			return result, nil
 
@@ -232,7 +232,7 @@ func (e TypeReflectCacheEntry) ToUnstructured(sv reflect.Value) (interface{}, er
 			result := make([]interface{}, 0)
 			err := unmarshal(data, &result)
 			if err != nil {
-				return nil, fmt.Errorf("error decoding array from json: %v", err)
+				return nil, fmt.Errorf("error decoding array from json: %w", err)
 			}
 			return result, nil
 
@@ -247,7 +247,7 @@ func (e TypeReflectCacheEntry) ToUnstructured(sv reflect.Value) (interface{}, er
 			} else if err = unmarshal(data, &resultFloat); err == nil {
 				return resultFloat, nil
 			} else {
-				return nil, fmt.Errorf("error decoding number from json: %v", err)
+				return nil, fmt.Errorf("error decoding number from json: %w", err)
 			}
 		}
 	}
@@ -267,7 +267,7 @@ func (e TypeReflectCacheEntry) FromUnstructured(sv, dv reflect.Value) error {
 	st := dv.Type()
 	data, err := json.Marshal(sv.Interface())
 	if err != nil {
-		return fmt.Errorf("error encoding %s to json: %v", st.String(), err)
+		return fmt.Errorf("error encoding %s to json: %w", st.String(), err)
 	}
 	if unmarshaler, ok := e.getJsonUnmarshaler(dv); ok {
 		return unmarshaler.UnmarshalJSON(data)

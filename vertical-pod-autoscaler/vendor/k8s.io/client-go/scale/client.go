@@ -104,7 +104,7 @@ func (c *scaleClient) apiPathFor(groupVer schema.GroupVersion) string {
 func (c *scaleClient) pathAndVersionFor(resource schema.GroupResource) (string, schema.GroupVersionResource, error) {
 	gvr, err := c.mapper.ResourceFor(resource.WithVersion(""))
 	if err != nil {
-		return "", gvr, fmt.Errorf("unable to get full preferred group-version-resource for %s: %v", resource.String(), err)
+		return "", gvr, fmt.Errorf("unable to get full preferred group-version-resource for %s: %w", resource.String(), err)
 	}
 
 	groupVer := gvr.GroupVersion()
@@ -134,7 +134,7 @@ func convertToScale(result *restclient.Result) (*autoscaling.Scale, error) {
 	// convert whatever this is to autoscaling/v1.Scale
 	scaleObj, err := scaleConverter.ConvertToVersion(rawScaleObj, autoscaling.SchemeGroupVersion)
 	if err != nil {
-		return nil, fmt.Errorf("received an object from a /scale endpoint which was not convertible to autoscaling Scale: %v", err)
+		return nil, fmt.Errorf("received an object from a /scale endpoint which was not convertible to autoscaling Scale: %w", err)
 	}
 
 	return scaleObj.(*autoscaling.Scale), nil
@@ -155,7 +155,7 @@ func (c *namespacedScaleClient) Get(ctx context.Context, resource schema.GroupRe
 
 	path, gvr, err := c.client.pathAndVersionFor(resource)
 	if err != nil {
-		return nil, fmt.Errorf("unable to get client for %s: %v", resource.String(), err)
+		return nil, fmt.Errorf("unable to get client for %s: %w", resource.String(), err)
 	}
 
 	result := c.client.clientBase.Get().
@@ -176,7 +176,7 @@ func (c *namespacedScaleClient) Get(ctx context.Context, resource schema.GroupRe
 func (c *namespacedScaleClient) Update(ctx context.Context, resource schema.GroupResource, scale *autoscaling.Scale, opts metav1.UpdateOptions) (*autoscaling.Scale, error) {
 	path, gvr, err := c.client.pathAndVersionFor(resource)
 	if err != nil {
-		return nil, fmt.Errorf("unable to get client for %s: %v", resource.String(), err)
+		return nil, fmt.Errorf("unable to get client for %s: %w", resource.String(), err)
 	}
 
 	// Currently, a /scale endpoint can receive and return different scale types.
@@ -186,18 +186,18 @@ func (c *namespacedScaleClient) Update(ctx context.Context, resource schema.Grou
 	// figure out what scale we actually need here
 	desiredGVK, err := c.client.scaleKindResolver.ScaleForResource(gvr)
 	if err != nil {
-		return nil, fmt.Errorf("could not find proper group-version for scale subresource of %s: %v", gvr.String(), err)
+		return nil, fmt.Errorf("could not find proper group-version for scale subresource of %s: %w", gvr.String(), err)
 	}
 
 	// convert this to whatever this endpoint wants
 	scaleUpdate, err := scaleConverter.ConvertToVersion(scale, desiredGVK.GroupVersion())
 	if err != nil {
-		return nil, fmt.Errorf("could not convert scale update to external Scale: %v", err)
+		return nil, fmt.Errorf("could not convert scale update to external Scale: %w", err)
 	}
 	encoder := scaleConverter.codecs.LegacyCodec(desiredGVK.GroupVersion())
 	scaleUpdateBytes, err := runtime.Encode(encoder, scaleUpdate)
 	if err != nil {
-		return nil, fmt.Errorf("could not encode scale update to external Scale: %v", err)
+		return nil, fmt.Errorf("could not encode scale update to external Scale: %w", err)
 	}
 
 	result := c.client.clientBase.Put().

@@ -78,7 +78,7 @@ func NewPool(filename string) (*x509.CertPool, error) {
 
 	pool, err := NewPoolFromBytes(pemBlock)
 	if err != nil {
-		return nil, fmt.Errorf("error creating pool from %s: %s", filename, err)
+		return nil, fmt.Errorf("error creating pool from %s: %w", filename, err)
 	}
 	return pool, nil
 }
@@ -106,7 +106,7 @@ func CertsFromFile(file string) ([]*x509.Certificate, error) {
 	}
 	certs, err := ParseCertsPEM(pemBlock)
 	if err != nil {
-		return nil, fmt.Errorf("error reading %s: %s", file, err)
+		return nil, fmt.Errorf("error reading %s: %w", file, err)
 	}
 	return certs, nil
 }

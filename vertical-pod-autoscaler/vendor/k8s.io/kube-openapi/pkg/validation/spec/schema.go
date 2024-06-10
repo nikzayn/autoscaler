@@ -488,29 +488,29 @@ func (s Schema) MarshalJSON() ([]byte, error) {
 	}
 	b1, err := json.Marshal(s.SchemaProps)
 	if err != nil {
-		return nil, fmt.Errorf("schema props %v", err)
+		return nil, fmt.Errorf("schema props %w", err)
 	}
 	b2, err := json.Marshal(s.VendorExtensible)
 	if err != nil {
-		return nil, fmt.Errorf("vendor props %v", err)
+		return nil, fmt.Errorf("vendor props %w", err)
 	}
 	b3, err := s.Ref.MarshalJSON()
 	if err != nil {
-		return nil, fmt.Errorf("ref prop %v", err)
+		return nil, fmt.Errorf("ref prop %w", err)
 	}
 	b4, err := s.Schema.MarshalJSON()
 	if err != nil {
-		return nil, fmt.Errorf("schema prop %v", err)
+		return nil, fmt.Errorf("schema prop %w", err)
 	}
 	b5, err := json.Marshal(s.SwaggerSchemaProps)
 	if err != nil {
-		return nil, fmt.Errorf("common validations %v", err)
+		return nil, fmt.Errorf("common validations %w", err)
 	}
 	var b6 []byte
 	if s.ExtraProps != nil {
 		jj, err := json.Marshal(s.ExtraProps)
 		if err != nil {
-			return nil, fmt.Errorf("extra props %v", err)
+			return nil, fmt.Errorf("extra props %w", err)
 		}
 		b6 = jj
 	}

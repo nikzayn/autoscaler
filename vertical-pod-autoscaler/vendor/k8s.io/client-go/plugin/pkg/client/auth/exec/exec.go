@@ -344,7 +344,7 @@ func (r *roundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	creds, err := r.a.getCreds()
 	if err != nil {
-		return nil, fmt.Errorf("getting credentials: %v", err)
+		return nil, fmt.Errorf("getting credentials: %w", err)
 	}
 	if creds.token != "" {
 		req.Header.Set("Authorization", "Bearer "+creds.token)

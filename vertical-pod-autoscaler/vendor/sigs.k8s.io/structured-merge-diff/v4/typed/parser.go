@@ -53,7 +53,7 @@ var ssParser = createOrDie(YAMLObject(schema.SchemaSchemaYAML))
 func NewParser(schema YAMLObject) (*Parser, error) {
 	_, err := ssParser.Type("schema").FromYAML(schema)
 	if err != nil {
-		return nil, fmt.Errorf("unable to validate schema: %v", err)
+		return nil, fmt.Errorf("unable to validate schema: %w", err)
 	}
 	p, err := create(schema)
 	if err != nil {
@@ -120,7 +120,7 @@ func (p ParseableType) FromUnstructured(in interface{}) (*TypedValue, error) {
 func (p ParseableType) FromStructured(in interface{}) (*TypedValue, error) {
 	v, err := value.NewValueReflect(in)
 	if err != nil {
-		return nil, fmt.Errorf("error creating struct value reflector: %v", err)
+		return nil, fmt.Errorf("error creating struct value reflector: %w", err)
 	}
 	return AsTyped(v, p.Schema, p.TypeRef)
 }

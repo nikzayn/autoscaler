@@ -127,7 +127,7 @@ func PrivateKeyFromFile(file string) (interface{}, error) {
 	}
 	key, err := ParsePrivateKeyPEM(data)
 	if err != nil {
-		return nil, fmt.Errorf("error reading private key file %s: %v", file, err)
+		return nil, fmt.Errorf("error reading private key file %s: %w", file, err)
 	}
 	return key, nil
 }
@@ -141,7 +141,7 @@ func PublicKeysFromFile(file string) ([]interface{}, error) {
 	}
 	keys, err := ParsePublicKeysPEM(data)
 	if err != nil {
-		return nil, fmt.Errorf("error reading public key file %s: %v", file, err)
+		return nil, fmt.Errorf("error reading public key file %s: %w", file, err)
 	}
 	return keys, nil
 }

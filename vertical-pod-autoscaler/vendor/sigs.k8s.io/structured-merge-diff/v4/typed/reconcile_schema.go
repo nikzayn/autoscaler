@@ -128,7 +128,7 @@ func ReconcileFieldSetWithSchema(fieldset *fieldpath.Set, tv *TypedValue) (*fiel
 	errs := v.reconcile()
 
 	if len(errs) > 0 {
-		return nil, fmt.Errorf("errors reconciling field set with schema: %s", errs.Error())
+		return nil, fmt.Errorf("errors reconciling field set with schema: %w", errs.Error())
 	}
 
 	// If there are any accumulated changes, apply them

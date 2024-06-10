@@ -671,7 +671,7 @@ func (r *Reflector) watchList(stopCh <-chan struct{}) (watch.Interface, error) {
 	initTrace.Step("Objects streamed", trace.Field{Key: "count", Value: len(temporaryStore.List())})
 	r.setIsLastSyncResourceVersionUnavailable(false)
 	if err = r.store.Replace(temporaryStore.List(), resourceVersion); err != nil {
-		return nil, fmt.Errorf("unable to sync watch-list result: %v", err)
+		return nil, fmt.Errorf("unable to sync watch-list result: %w", err)
 	}
 	initTrace.Step("SyncWith done")
 	r.setLastSyncResourceVersion(resourceVersion)

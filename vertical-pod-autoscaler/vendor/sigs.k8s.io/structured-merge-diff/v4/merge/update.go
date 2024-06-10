@@ -223,18 +223,18 @@ func (s *Updater) prune(merged *typed.TypedValue, managers fieldpath.ManagedFiel
 		if s.Converter.IsMissingVersionError(err) {
 			return merged, nil
 		}
-		return nil, fmt.Errorf("failed to convert merged object to last applied version: %v", err)
+		return nil, fmt.Errorf("failed to convert merged object to last applied version: %w", err)
 	}
 
 	sc, tr := convertedMerged.Schema(), convertedMerged.TypeRef()
 	pruned := convertedMerged.RemoveItems(lastSet.Set().EnsureNamedFieldsAreMembers(sc, tr))
 	pruned, err = s.addBackOwnedItems(convertedMerged, pruned, managers, applyingManager)
 	if err != nil {
-		return nil, fmt.Errorf("failed add back owned items: %v", err)
+		return nil, fmt.Errorf("failed add back owned items: %w", err)
 	}
 	pruned, err = s.addBackDanglingItems(convertedMerged, pruned, lastSet)
 	if err != nil {
-		return nil, fmt.Errorf("failed add back dangling items: %v", err)
+		return nil, fmt.Errorf("failed add back dangling items: %w", err)
 	}
 	return s.Converter.Convert(pruned, managers[applyingManager].APIVersion())
 }
@@ -309,15 +309,15 @@ func (s *Updater) addBackDanglingItems(merged, pruned *typed.TypedValue, lastSet
 		if s.Converter.IsMissingVersionError(err) {
 			return merged, nil
 		}
-		return nil, fmt.Errorf("failed to convert pruned object to last applied version: %v", err)
+		return nil, fmt.Errorf("failed to convert pruned object to last applied version: %w", err)
 	}
 	prunedSet, err := convertedPruned.ToFieldSet()
 	if err != nil {
-		return nil, fmt.Errorf("failed to create field set from pruned object in last applied version: %v", err)
+		return nil, fmt.Errorf("failed to create field set from pruned object in last applied version: %w", err)
 	}
 	mergedSet, err := merged.ToFieldSet()
 	if err != nil {
-		return nil, fmt.Errorf("failed to create field set from merged object in last applied version: %v", err)
+		return nil, fmt.Errorf("failed to create field set from merged object in last applied version: %w", err)
 	}
 	sc, tr := merged.Schema(), merged.TypeRef()
 	prunedSet = prunedSet.EnsureNamedFieldsAreMembers(sc, tr)

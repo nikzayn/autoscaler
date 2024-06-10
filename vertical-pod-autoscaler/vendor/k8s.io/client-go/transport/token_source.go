@@ -134,7 +134,7 @@ var _ = oauth2.TokenSource(&fileTokenSource{})
 func (ts *fileTokenSource) Token() (*oauth2.Token, error) {
 	tokb, err := os.ReadFile(ts.path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read token file %q: %v", ts.path, err)
+		return nil, fmt.Errorf("failed to read token file %q: %w", ts.path, err)
 	}
 	tok := strings.TrimSpace(string(tokb))
 	if len(tok) == 0 {
